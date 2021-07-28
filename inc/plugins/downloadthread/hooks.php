@@ -98,7 +98,7 @@ function downloadthread_showthread_start()
             $db->free_result($query);
 
             $zip = new ZipArchive;
-            $res = $zip->open($safe_name . ".zip", ZipArchive::CREATE);
+            $res = $zip->open($safe_name . ".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
             if(!$res)
             {
                 header('Content-Description: File Transfer');
