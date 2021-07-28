@@ -28,13 +28,6 @@ function downloadthread_install()
     $groupscache = $cache->read('usergroups');
 }
 
-function downloadthread_is_installed()
-{
-    global $cache;
-    $active_plugins = $cache->read("plugins");
-    return isset($active_plugins['active']['downloadthread']);
-}
-
 function downloadthread_activate()
 {
     require_once "downloadthread/templates.php";
