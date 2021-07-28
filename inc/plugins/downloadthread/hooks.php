@@ -113,9 +113,15 @@ function downloadthread_showthread_start()
             }
             $db->free_result($query);
 
+            $basepath = "{$mybb->settings['uploadspath']}/dlt-tmp";
+            if (!file_exists($basepath)) {
+                mkdir($basepath, 0777, /*$recursive=*/true);
+            }
+
             $zip = new ZipArchive;
-            $res = $zip->open($safe_name . ".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
-            if(!$res)
+            $zipfile = $basepath . "/" .$safe_name . ".zip";
+            $res = $zip->open($zipfile, ZipArchive::CREATE|ZipArchive::OVERWRITE);
+            if($res !== true)
             {
                 header('Content-Description: File Transfer');
                 header("Content-Disposition: attachment; filename=$fname");
@@ -129,12 +135,12 @@ function downloadthread_showthread_start()
                 $contenttype = "application/zip";
                 $zip->addFromString($fname, $content);
                 $zip->close();
-                $fname = $safe_name . ".zip";
                 header('Content-Description: File Transfer');
-                header("Content-Disposition: attachment; filename=$fname");
+                header("Content-Disposition: attachment; filename={$safe_name}.zip");
                 header("Content-type: $contenttype");
-                header("Content-Length: " . filesize($fname));
-                readfile($fname);
+                header("Content-Length: " . filesize($zipfile));
+                readfile($zipfile);
+                unlink($zipfile);
                 exit;
             }
         }
