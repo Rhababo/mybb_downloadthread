@@ -77,6 +77,21 @@ function downloadthread_showthread_start()
                 $contenttype = 'text/html';
                 $fname = $safe_name . '.html';
             }
+            else if($mybb->get_input("format") == "txt")
+            {
+                require_once MYBB_ROOT . "inc/class_parser.php";
+                $parser = new postParser;
+                while ($post = $db->fetch_array($query))
+                {
+                    $post['message'] = $parser->text_parse_message($post['message'], $parser_options);
+                    $post['time'] = my_date("relative", $post['dateline']);
+                    eval("\$threadposts .= \"" . $templates->get("downloadthread_post_txt", 1, 0) . "\";");
+                }
+                eval("\$text = \"" . $templates->get("downloadthread_thread_txt", 1, 0) . "\";");
+                $content = $text;
+                $contenttype = 'text/plain';
+                $fname = $safe_name . '.txt';
+            }
             else
             {
                 // CSV Format

@@ -1,7 +1,7 @@
 {
   "downloadthread_form": {
     "title": "downloadthread_form",
-    "template": "<li style=\"background-image: url({$mybb->settings['bburl']}\/images\/downloadthread\/download.png)\">\n<form method=\"post\" action=\"showthread.php?downloadthread=1&amp;tid={$thread['tid']}\" style=\"display: inline;\" id=\"downloadthread_form\">\n<input type=\"hidden\" name=\"my_post_key\" value=\"{$mybb->post_code}\" \/>\n<input type=\"submit\" style=\"background: none; border: none; color: #0072BC; font-family: Tahoma, Verdana, Arial, Sans-Serif; cursor: pointer; display: inline; margin: 0; padding: 0; font-size: 11px;\" name=\"go\" value=\"{$lang->downloadthread_downloadthread}\" \/>\n<select name=\"format\" id=\"format_select\" onchange=\"downloadthread()\">\n<option value=\"html\">HTML<\/option>\n<option value=\"json\">JSON<\/option>\n<option value=\"csv\">CSV<\/option>\n<\/select>\n<script>\nfunction downloadthread()\n{\n\tvar chosen_format = document.getElementById(\"format_select\").value;\n\tif(chosen_format == 0)\n\t{\n\t\treturn;\n\t}\n\tdocument.getElementById(\"downloadthread_form\").submit();\n}\n<\/script>\n</form>\n<\/li>"
+    "template": "<li style=\"background-image: url({$mybb->settings['bburl']}\/images\/downloadthread\/download.png)\">\n<form method=\"post\" action=\"showthread.php?downloadthread=1&amp;tid={$thread['tid']}\" style=\"display: inline;\" id=\"downloadthread_form\">\n<input type=\"hidden\" name=\"my_post_key\" value=\"{$mybb->post_code}\" \/>\n<input type=\"submit\" style=\"background: none; border: none; color: #0072BC; font-family: Tahoma, Verdana, Arial, Sans-Serif; cursor: pointer; display: inline; margin: 0; padding: 0; font-size: 11px;\" name=\"go\" value=\"{$lang->downloadthread_downloadthread}\" \/>\n<select name=\"format\" id=\"format_select\" onchange=\"downloadthread()\">\n<option value=\"html\">HTML<\/option>\n<option value=\"txt\">Plain text<\/option>\n<option value=\"json\">JSON<\/option>\n<option value=\"csv\">CSV<\/option>\n<\/select>\n<script>\nfunction downloadthread()\n{\n\tvar chosen_format = document.getElementById(\"format_select\").value;\n\tif(chosen_format == 0)\n\t{\n\t\treturn;\n\t}\n\tdocument.getElementById(\"downloadthread_form\").submit();\n}\n<\/script>\n</form>\n<\/li>"
   },
   "downloadthread_thread": {
     "title": "downloadthread_thread",
@@ -10,5 +10,13 @@
   "downloadthread_post": {
     "title": "downloadthread_post",
     "template": "<tr><td style=\"vertical-align: top; padding-left: 5px; padding-right: 5px\">{$post['username']}\n<br />\n<br />\n{$post['time']}\n</td>\n<td style=\"padding-left: 5px; padding-right: 5px\">{$post['message']}</td>\n</tr>"
+  },
+  "downloadthread_thread_txt": {
+    "title": "downloadthread_thread_txt",
+    "template": "{$thread['subject']}\n\n{$threadposts}\n"
+  },
+  "downloadthread_post_txt": {
+    "title": "downloadthread_post_txt",
+    "template": "{$post['username']}\n{$post['time']}\n------------------------------------------------------------------------\n{$post['message']}\n------------------------------------------------------------------------\n\n"
   }
 }
