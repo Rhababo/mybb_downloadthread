@@ -28,6 +28,13 @@ function downloadthread_install()
     $groupscache = $cache->read('usergroups');
 }
 
+function downloadthread_is_installed()
+{
+    global $db;
+    $res = $db->simple_select('settinggroups', 'gid', "name = 'downloadthread_settings'");
+    return ($db->fetch_field($res, 'gid')) ? true : false;
+}
+
 function downloadthread_activate()
 {
     require_once "downloadthread/templates.php";
