@@ -10,7 +10,7 @@ function downloadthread_info()
         "name"	=> "Download Thread",
         "description" => "Enables users to download a thread.",
         "author" => $author1link . " &amp; " . $author2link,
-        "version" => "1.1",
+        "version" => "1.2",
         "codename" 	=> "downloadthread",
         "compatibility"	=> "18*"
     );
