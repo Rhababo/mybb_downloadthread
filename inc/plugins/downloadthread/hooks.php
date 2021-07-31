@@ -84,7 +84,7 @@ function downloadthread_showthread_start()
                 while ($post = $db->fetch_array($query))
                 {
                     $post['message'] = $parser->text_parse_message($post['message'], $parser_options);
-                    $post['time'] = my_date("relative", $post['dateline']);
+                    $post['time'] = my_date('Y-m-d H:i:s', $post['dateline']);
                     eval("\$threadposts .= \"" . $templates->get("downloadthread_post_txt", 1, 0) . "\";");
                 }
                 eval("\$text = \"" . $templates->get("downloadthread_thread_txt", 1, 0) . "\";");
@@ -99,13 +99,13 @@ function downloadthread_showthread_start()
                 $first = true;
                 while($post = $db->fetch_array($query))
                 {
+                    $post['friendly_dateline'] = my_date('Y-m-d H:i:s', $post['dateline']);
+                    $safe_post = array_map(function($value) {return '"'.my_escape_csv($value).'"';}, $post);
                     if($first)
                     {
                         $first = false;
                         $content = implode(",", array_keys($post));
                     }
-                    $post['dateline'] = my_date("normal", $post['dateline']);
-                    $safe_post = array_map(function($value) {return '"'.my_escape_csv($value).'"';}, $post);
                     $content .= "\n" . implode(",", $safe_post);
                 }
                 $contenttype = "text/csv";
