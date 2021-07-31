@@ -35,7 +35,7 @@ function downloadthread_showthread_start()
         else
         {
             $tid = $mybb->get_input("tid", MyBB::INPUT_INT);
-            $query = $db->simple_select("posts", "pid,username,dateline,message", "tid=" . $tid, array("order_by" => "pid", "order_dir" => "asc"));
+            $query = $db->simple_select("posts", "pid,username,dateline,message", "tid={$tid} AND visible=1", array("order_by" => "pid", "order_dir" => "asc"));
             $posts = array();
             $safe_name = str_replace(' ', '-', $thread['subject']);
             $safe_name = preg_replace('([^A-Za-z0-9_-])', '', $safe_name);
