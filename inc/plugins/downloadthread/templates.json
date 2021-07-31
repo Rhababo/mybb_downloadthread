@@ -17,6 +17,6 @@
   },
   "downloadthread_post_txt": {
     "title": "downloadthread_post_txt",
-    "template": "{$post['username']}\n{$post['time']}\n------------------------------------------------------------------------\n{$post['message']}\n------------------------------------------------------------------------\n\n"
+    "template": "{$post['username']}\n{$post['time']}\n--------------------\n{$post['message']}\n--------------------\n\n"
   }
 }
