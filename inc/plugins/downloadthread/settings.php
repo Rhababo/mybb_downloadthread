@@ -21,15 +21,32 @@ function downloadthread_settings_install()
             'description' => 'Select the forums from which threads may be downloaded.',
             'optionscode' => 'forumselect',
             'value'       => '-1',
+            'disporder' => 1
         ),
+        'groups' => array(
+            'title'       => 'Enabled Groups',
+            'description' => 'Select the groups which may download threads.',
+            'optionscode' => 'groupselect',
+            'value'       => '-1',
+            'disporder' => 2
+        ),
+        'button_location' => array(
+            'title' => 'Button Location',
+            'description' => 'Where should the download button be located?',
+            'optionscode' => 'radio\n0=Bottom of page\n1=Top and Bottom of page',
+            'value' => 1,
+            'disporder' => 3
+        ),
+
     );
+
     $ordernum = 1;
     foreach ($settings as $name => $setting) {
         $insert_settings = array(
             'name'        => $db->escape_string('downloadthread_'.$name),
             'title'       => $db->escape_string($setting['title']),
             'description' => $db->escape_string($setting['description']),
-            'optionscode' => $db->escape_string($setting['optionscode']),
+            'optionscode' => (string)$setting['optionscode'],
             'value'       => $db->escape_string($setting['value']),
             'disporder'   => $ordernum,
             'gid'         => $gid,
@@ -39,6 +56,7 @@ function downloadthread_settings_install()
         $ordernum++;
     }
     rebuild_settings();
+    
 }
 
 function downloadthread_settings_update()
@@ -52,14 +70,15 @@ function downloadthread_settings_uninstall()
 
     $needs_rebuild = false;
     $res = $db->simple_select('settinggroups', 'gid', "name = 'downloadthread_settings'");
+    
+
     while (($gid = $db->fetch_field($res, 'gid')))
     {
         $db->delete_query('settinggroups', "gid='{$gid}'");
         $db->delete_query('settings', "gid='{$gid}'");
         $needs_rebuild = true;
     }
-    if ($needs_rebuild)
-    {
-        rebuild_settings();
-    }
+
+    rebuild_settings();
+
 }
