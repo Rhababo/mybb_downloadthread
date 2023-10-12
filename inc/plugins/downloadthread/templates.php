@@ -30,12 +30,27 @@ function downloadthread_templates_install()
     // Template Changes
 
     require_once MYBB_ROOT.'/inc/adminfunctions_templates.php';
-    find_replace_templatesets('showthread', '({\\$addpoll})', "{\$addpoll}\n\t\t\t{\$downloadthread}");
+    find_replace_templatesets('showthread', '({\\$search_thread})', "{\$search_thread}\t\t\t{\$downloadthread}");
 }
 
 function downloadthread_templates_update()
 {
-    // Will be used in future releases.
+    global $mybb;
+
+    require_once MYBB_ROOT.'/inc/adminfunctions_templates.php';
+    //remove previous template position
+    find_replace_templatesets('showthread', '(\\r?\\t\\t\\t{\\$downloadthread})', '', 0);
+
+    //0 = bottom of page
+    //1 = top and bottom of page
+    if($mybb->settings['downloadthread_button_location']=="0")
+    {
+        find_replace_templatesets('showthread', '({\\$search_thread})', "{\$search_thread}\t\t\t{\$downloadthread}");
+    }
+    else
+    {
+        find_replace_templatesets('showthread', '({\\$addpoll})', "{\$addpoll}\t\t\t{\$downloadthread}");
+    }
 }
 
 function downloadthread_templates_uninstall()
@@ -44,7 +59,7 @@ function downloadthread_templates_uninstall()
 
     // Revert Template changes.
     require_once MYBB_ROOT.'/inc/adminfunctions_templates.php';
-    find_replace_templatesets('showthread', '(\\r?\\n\\t\\t\\t{\\$downloadthread})', '', 0);
+    find_replace_templatesets('showthread', '(\\r?\\t\\t\\t{\\$downloadthread})', '', 0);
     $template_json = json_decode(file_get_contents(__DIR__."/templates.json", false), true);
     $comma = "";
     $delete_string = "";
