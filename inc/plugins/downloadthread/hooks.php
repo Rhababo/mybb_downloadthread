@@ -4,6 +4,7 @@ $plugins->add_hook("global_start", "downloadthread_global_start");
 $plugins->add_hook("showthread_start", "downloadthread_showthread_start");
 $plugins->add_hook("admin_formcontainer_end", "download_admin_formcontainer_end");
 $plugins->add_hook("admin_user_groups_edit_commit", "downloadthread_admin_user_groups_edit_commit");
+$plugins->add_hook("admin_config_settings_change_commit", "downloadthread_update_template_selection");
 
 function downloadthread_global_start()
 {
@@ -22,13 +23,17 @@ function downloadthread_showthread_start()
 {
     global $mybb, $db, $forum, $thread, $lang, $templates;
     $lang->load("downloadthread");
+    $candl_groups = explode(',',$mybb->settings['downloadthread_groups']);
+    $user_groups = explode(',',$mybb->usergroup['all_usergroups']);
+    $has_permission_group = array_intersect($candl_groups, $user_groups);
+
     if($mybb->get_input("downloadthread", MyBB::INPUT_INT) == 1 && $mybb->request_method == "post" && verify_post_check($mybb->get_input("my_post_key")))
     {
         if($mybb->settings['downloadthread_forums'] != -1 && !in_array($thread['fid'], explode(',', (string)$mybb->settings['downloadthread_forums'])))
         {
             error($lang->downloadthread_download_disabled);
         }
-        else if(!$mybb->usergroup['dlt_candlthread'])
+        else if(count($has_permission_group) == 0 &&!($candl_groups[0]==(string)-1))
         {
             error($lang->downloadthread_usergroup_no_permission);
         }
@@ -150,9 +155,10 @@ function downloadthread_showthread_start()
         global $downloadthread;
         if($mybb->settings['downloadthread_forums'] != -1 && !in_array($thread['fid'], explode(',', (string)$mybb->settings['downloadthread_forums'])))
         {
+
             $downloadthread = "";
         }
-        else if(!$mybb->usergroup['dlt_candlthread'])
+        else if(count($has_permission_group) == 0 &&!($candl_groups[0]==(string)-1))
         {
             $downloadthread = "";
         }
@@ -165,6 +171,8 @@ function downloadthread_showthread_start()
 
 function download_admin_formcontainer_end()
 {
+    //usergroup check is now handled by the plugin settings
+    //leaving this here as the depreciated setting is still updated in the database
     global $mybb, $lang, $form, $form_container, $groupscache;
 
     $gid = $mybb->get_input('gid', MyBB::INPUT_INT);
@@ -184,4 +192,10 @@ function downloadthread_admin_user_groups_edit_commit()
     global $mybb, $updated_group;
 
     $updated_group['dlt_candlthread'] = $mybb->get_input('dlt_candlthread', MyBB::INPUT_INT);
+}
+
+function downloadthread_update_template_selection()
+{
+    require_once "templates.php";
+    downloadthread_templates_update();
 }
