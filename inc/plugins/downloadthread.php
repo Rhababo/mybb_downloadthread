@@ -6,11 +6,12 @@ function downloadthread_info()
 {
     $author1link = "<a href=\"https://community.mybb.com/user-24419.html\" target=\"_blank\">Dragonexpert</a>";
     $author2link = "<a href=\"https://community.mybb.com/user-116662.html\" target=\"_blank\">Laird</a>";
+    $author3link = "<a href=\"https://github.com/Rhababo/mybb_downloadthread\" target=\"_blank\">Rhababo</a>";
     return array(
         "name"	=> "Download Thread",
         "description" => "Enables users to download a thread.",
-        "author" => $author1link . " &amp; " . $author2link,
-        "version" => "1.3",
+        "author" => $author1link . " &amp; " . $author2link .". Mod by ". $author3link,
+        "version" => "1.4",
         "codename" 	=> "downloadthread",
         "compatibility"	=> "18*"
     );
